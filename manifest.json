@@ -1,0 +1,97 @@
+{
+    "manifest_version": 2,
+    "name": "Chrome Bot",
+    "short_name": "ChromeBot",
+    "author": "Sipho and Temba Mateke",
+    "version": "0.1",
+
+    //"default_locale": "en",
+    "description": "A Chrome automater. Currently only supports WhatsApp.",
+    "icons": {
+        "16" : "images/bot_icon.png",
+        "48" : "images/bot_icon.png",
+        "128" : "images/bot_icon.png"
+    },
+
+    "content_scripts": [
+        // WhatsApp
+        {
+            "matches": [
+                "https://web.whatsapp.com/*"
+            ],
+            "js": [
+                "jquery-3.2.1.min.js",
+                "universal_content.js",
+                "modules/whatsapp/content_wa.js"
+            ]
+        },
+        // Youtube
+        {
+            "matches": [
+                "https://www.youtube.com/*"
+            ],
+            "js": [
+                "jquery-3.2.1.min.js",
+                "universal_content.js",
+                "modules/youtube/content_yt.js"
+            ]
+        },
+        // KeepVid
+        {
+            "matches": [
+                "http://keepvid.com/*"
+            ],
+            "js": [
+                "jquery-3.2.1.min.js",
+                "universal_content.js",
+                "modules/keepvid/content_kv.js"
+            ]
+        },
+        // Facebook
+        {
+            "matches": [
+                "https://web.facebook.com/*",
+                "https://free.facebook.com/*"
+            ],
+            "js": [
+                "jquery-3.2.1.min.js",
+                "universal_content.js",
+                "sdk.js",
+                "modules/facebook/content_fb.js"
+            ]
+        }
+    ],
+    "browser_action": {
+        "default_icon": "images/bot_icon_bw.png",
+        "default_title": "Chrome Bot",
+        "default_popup": "popup/popup.html"
+    },
+    "background": {
+        "scripts": [
+            "jquery-3.2.1.min.js",
+            "universal.js",
+            "sdk.js",
+            "modules/whatsapp/background_wa.js",
+            "modules/facebook/background_fb.js",
+            "modules/youtube/background_yt.js",
+            "modules/keepvid/background_kv.js",
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "contextMenus",
+        "notifications",
+        "downloads",
+        "storage",
+        "https://*/*", // Required to get all tabs
+        "http://*/*" // Required to get all tabs
+    ],
+    "omnibox": { "keyword" : "bot" },
+    "options_ui": {
+        "page": "options/options.html",
+        "chrome_style": true
+    },
+    "content_security_policy": "script-src 'self' https://graph.facebook.com; object-src 'self'"
+}
