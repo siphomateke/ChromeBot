@@ -64,6 +64,7 @@ function onload() {
                     type: 'buttonOnClick',
                     buttonId: button.id
                 });
+                window.close();
             });
         }
     }
