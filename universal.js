@@ -462,11 +462,11 @@ class Module {
      * @param {number} tabId The ID of the tab to send a message to
      * @param {object} data  The message data
      */
-    sendTabMessage(tabId, data) {
+    sendTabMessage(tabId, data, callback) {
         data.from = this.name;
         console.log("Sent message to tabId : "+tabId);
         console.log(data);
-        chrome.tabs.sendMessage(tabId, data);
+        chrome.tabs.sendMessage(tabId, data, callback);
     }
 }
 
