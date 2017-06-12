@@ -1,20 +1,49 @@
-var audio_row = $('td:contains("M4A")').parent('tr');
-var download_size = audio_row.find('td:nth-child(3)');
-var audio_download_button = audio_row.find('td:nth-child(4)').find('a[download]');
+function getDownload(row) {
+    var download_size = row.find('td:nth-child(3)');
+    var download_button = row.find('td:nth-child(4)').find('a[download]');
 
-var audio_download = {
-    name: audio_download_button.attr('download'),
-    path: audio_download_button.attr('href'),
-    size: download_size.text()
+    download = {
+        name: download_button.attr('download'),
+        path: download_button.attr('href'),
+        size: download_size.text()
+    }
+    return download;
 }
 
-var error = false;
-if (audio_download.name == undefined || audio_download.path==undefined) {
-    error = true;
+function download(options, sendResponse) {
+    var download;
+    if (options.type == 'audio') {
+        var row = $('td:contains("'+options.quality+'")').parent('tr');
+        download = getDownload(row);
+    }
+    else if (options.type == 'video') {
+        // TODO: Add checks to make sure item is video
+        var row = $('td:contains("'+options.quality+'")').parent('tr');
+        download = getDownload(row);
+    }
+
+    var error = false;
+    if (download.name == undefined || download.path==undefined) {
+        error = true;
+    }
+
+    console.log(download);
+
+    sendResponse({
+        from: 'keepVidContent',
+        type: 'downloadData',
+        data: download,
+        error: error
+    });
 }
 
-chrome.runtime.sendMessage({
-    type: "download",
-    error: error,
-    download: audio_download
-});
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        console.log(request);
+        if (request.from == 'KeepVidModule') {
+            if (request.type == 'command' && request.command == 'download') {
+                download(request.options, sendResponse);
+            }
+        }
+    }
+)
