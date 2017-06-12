@@ -68,17 +68,44 @@ bot.ca.keepvid = function (youtubeUrl, active=false, callback) {
     bot.ca.newTab("http://keepvid.com/?url=" + youtubeUrl, active, callback)
 }
 
-bot.ca.downloadYoutube = function(query, options={}, callback=()=>{}) {
+bot.ca.getYoutubeDownloadLink = function (query, options={'type': 'audio'}, callback=()=>{}) {
     bot.ca.youtube(query, {'active':false}, (tab) => {
         var tabTracker = new TabTracker({'tabIds': [tab.id]});
         tabTracker.events.addEventListener('onTabLoad', (tab) => {
             bot.ca.closeTab(tab);
             bot.ca.keepvid(tab.url, false, (keepvidTab) => {
-                console.log(keepvidTab);
-                // TODO: Add KeepVid
+                kv.requestDownload(keepvidTab.id, options, (response) => {
+                    bot.ca.closeTab(keepvidTab);
+                    callback(response);
+                });
             });
         });
     });
+}
+
+bot.ca.downloadYoutube = function(query, options={}) {
+    bot.ca.getYoutubeDownloadLink(query, {'type': 'audio'},(response) => {
+        if (response.error == false) {
+            var download = response.data;
+            wam.confirmAction(" Are you sure you want to download '" + download.name + "'(" + download.size + ")?", (confirmed) => {
+                if (confirmed) {
+                    bot.notify("Downloading '" + download.name + "'(" + download.size + ")");
+                    chrome.downloads.download({
+                        url: download.path,
+                        filename: download.name
+                    }, function (downloadId) {
+                        if (typeof downloadId === 'undefined') {
+                            wam.send_whatsapp_msg("Error: Could not download youtube video.");
+                            bot.notify("Could not download youtube video.", "error");
+                        }
+                    });
+                }
+            });
+        } else {
+            wam.send_whatsapp_msg("Error: Could not download youtube video.");
+            bot.notify("Could not download youtube video.", "error");
+        }
+    })
 }
 
 // "Is that a girl or a little boy?" ~ Temba asking about Rihanna
