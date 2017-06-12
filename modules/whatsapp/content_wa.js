@@ -188,7 +188,6 @@
             simulateClick(composeBlock.find('.compose-btn-send'));
         }
         if (whatsAppLoaded()) {
-            console.log('Send message is whatsapp loaded');
             openChat(contactName, run);
         }
     }
