@@ -5,6 +5,10 @@ class WhatsAppModule extends Module {
         this.was_listening = false;
         this.tabTracker = new TabTracker({'urlPatterns' : chrome.runtime.getManifest().content_scripts[0].matches});
         this.last_msg = '';
+        this.confirmationStrings = {
+            'confirm' : ['yes', 'yeah', 'yea', 'k', 'ok', 'okey-dokey', 'by all means', 'affirmative', 'aye aye', 'roger', 'uh-huh', 'uh huh', 'yup', 'yep', 'very well', 'righto', 'yuppers', 'right on', 'sure'],
+            'cancel':  ['no', 'uh-uh', 'uh uh', 'nope', 'nay', 'nah', 'no way', 'negative']
+        };
         this._confirmCheck = function () {};
 
         this.events = new Reactor();
@@ -177,7 +181,7 @@ class WhatsAppModule extends Module {
         this._confirmCheck = function (msg_original) {
             var msg = msg_original.toLowerCase();
             var confirmed = false;
-            if (msg == 'yes' || msg == 'y' || emojisEqual(msg, '\u{1F44D}')) {
+            if (this.confirmationStrings.confirm.includes(msg)|| emojisEqual(msg, '\u{1F44D}')) {
                 confirmed = true;
             }
             callback(confirmed);
