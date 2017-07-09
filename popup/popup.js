@@ -18,6 +18,9 @@ function onload() {
 
     function generateHtmlButton(button) {
         var html = '<li class="menu-item';
+        if (button.type != 'back' && button.clickType == 'navigation') {
+            html += ' has-children';
+        }
         if (button.type == 'back') {
             html += ' back';
         }
