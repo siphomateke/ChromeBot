@@ -1,3 +1,4 @@
+// TODO: Document KeepVidModule
 class KeepVidModule extends Module{
     constructor() {
         super('KeepVidModule');
