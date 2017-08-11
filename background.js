@@ -54,6 +54,7 @@ bot.ca.google = function (query, options = {}, callback) {
     }
 };
 
+// TODO: Document more core actions. e.g wikipedia, youtube, getYoutubeDownloadLink
 bot.ca.wikipedia = function (query, options={}, callback) {
     options.lucky = true;
     bot.ca.google("site%3Aen.wikipedia.org+" + query, options, callback);
@@ -95,14 +96,14 @@ bot.ca.downloadYoutube = function(query, options={}) {
                         filename: download.name
                     }, function (downloadId) {
                         if (typeof downloadId === 'undefined') {
-                            wam.send_whatsapp_msg("Error: Could not download youtube video.");
+                            wam.sendWhatsAppMessage("Error: Could not download youtube video.");
                             bot.notify("Could not download youtube video.", "error");
                         }
                     });
                 }
             });
         } else {
-            wam.send_whatsapp_msg("Error: Could not download youtube video.");
+            wam.sendWhatsAppMessage("Error: Could not download youtube video.");
             bot.notify("Could not download youtube video.", "error");
         }
     })
@@ -116,7 +117,6 @@ let whatsappActions = {
     'youtube': bot.ca.youtube,
     '\u{1F4D6}': bot.ca.wikipedia,
     'keepvid': bot.ca.keepvid,
-    // TODO: Implement youtube video downloading
     //'\u{2B07}': getYouTubeURL,
     '\u{2B07}': bot.ca.downloadYoutube
 };
