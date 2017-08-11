@@ -352,13 +352,13 @@ class ChromeBot {
         this.popup = new Popup();
 
         this.popup.addButton({'title': 'Options','icon': 'cog', 'onClick': chrome.runtime.openOptionsPage});
-        this.popup.addButton({'title': 'Android settings','icon': 'android', 'onClick': '#android'});
+        /*this.popup.addButton({'title': 'Android settings','icon': 'android', 'onClick': '#android'});
             this.popup.addButton({'menu': 'android','title': 'Hello','icon': 'save'});
             this.popup.addButton({'menu': 'android','title': 'Turn of Wifi','icon': 'wifi','iconColor':'#04a235'});
             this.popup.addButton({'menu': 'android','title': 'Kill the lights','icon': 'desktop','iconColor':'#a20404', 'onClick': '#lights'});
 
             this.popup.addMenu({'name': 'lights', 'parent':'android'});
-                this.popup.addButton({'menu': 'lights','title': 'Happy days','icon': 'cube'});
+                this.popup.addButton({'menu': 'lights','title': 'Happy days','icon': 'cube'});*/
 
         this.savedTabs = {};
 
