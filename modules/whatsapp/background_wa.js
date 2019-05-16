@@ -84,10 +84,8 @@ class WhatsAppModule extends Module {
             this.listening = false;
             bot.notify('Only one WhatsApp tab should be open. Please close all other WhatsApp tabs but one.', 'error');
         } else {
+            bot.notify('No WhatsApp tabs open.', 'error');
             this.listening = false;
-            if (this.listening) {
-                bot.notify('No WhatsApp tabs open.', 'error');
-            }
         }
         this.updateListenStatus();
     }
